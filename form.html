@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <html>
 <style type="text/css">
 
@@ -108,14 +109,17 @@ select{
 		</select>
 	<input type="text" name="pixkey" id="pixkey" required placeholder="exemplo@email.com" size=37 onblur="checkVal()" pattern="[^@\s]+@[^@\s]+\.[^@\s]+" title="Endereço de E-Mail" />
     
+	<li><label>Valor </label>
+        <input type="text" name="valor" class="field-long" title="Valor" placeholder="0.00" /> </li>
+	
 	<li><label>Nome do Beneficiário <span class="required">*</span></label>
-        <input type="text" name="field2" class="field-long" required title="Seu Nome" placeholder="Seu Nome" /> </li>
+        <input type="text" name="nome" class="field-long" required title="Seu Nome" placeholder="Seu Nome" /> </li>
     
 	<li><label>Cidade <span class="required">*</label>
-        <input type="text" required name="field3" class="field-long" value="SAO PAULO" /> </li>
+        <input type="text" required name="city" class="field-long" value="SAO PAULO" /> </li>
 	
-	<li><label>ID da Trasação </label>
-        <input type="text" name="field4" class="field-long" /> </li>
+	<li><label>ID da Transação </label>
+        <input type="text" name="id" class="field-long" /> </li>
 	
 	<li><input type="submit" value="Enviar" /> </li>
 </ul>
