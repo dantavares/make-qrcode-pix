@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=0.7%" />
 <html><body>
 
 <?php
@@ -12,6 +14,7 @@ use Endroid\QrCode\Label\Font\OpenSans;
 use Endroid\QrCode\RoundBlockSizeMode;
 use Endroid\QrCode\Writer\PngWriter;
 
+$fullurl = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 //--------------------------------------------------------------------
 
 //Função para calucular o CRC16-CCITT-FFFF, 
@@ -66,7 +69,7 @@ function computeCRC($str) {
     return strtoupper(dechex($answer));
 }
 
-function genRndStr($length = 10) {
+function genRndStr($length = 6) {
     $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
     $randomString = '';
@@ -92,12 +95,27 @@ class emv {
     }
     
     public function makestr() {
-    	return $this->id.$this->tam.$this->val;
+		return $this->id.$this->tam.$this->val;
     }
 }
 
 //-----------------------------------------------------------------------
 
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+	$pixkey	= $_GET['pixkey'];
+    $valor  = $_GET['valor'];
+	$valor  = sprintf("%01.2f", str_replace(",", ".", $_GET['valor']));
+    $nome   = $_GET['nome'];
+    $city   = $_GET['city'];
+    $id		= $_GET['id'];
+/*
+$pixkey = "31182455816";
+$valor = "1.00";
+$nome = "Daniel R.";
+$city = "Sorocaba";
+$id = "";
+*/
+	
 //Inicio da criação dos objetos, para montagem str do qrcode pix
 
 //Payload Format Indicator
@@ -105,7 +123,7 @@ $pfi = new emv("00","01");
 
 //Merchant Account Information
 $mai_gui = new emv("00","BR.GOV.BCB.PIX"); //Globally Unique Identifier
-$mai_key = new emv("01","31182455816"); //Chave PIX
+$mai_key = new emv("01",$pixkey); //Chave PIX
 $mai = new emv("26", $mai_gui->makestr().$mai_key->makestr());
 
 //Merchant Category Code
@@ -115,19 +133,21 @@ $mcc = new emv("52","0000");
 $tc = new emv("53","986");
 
 //Transaction Amount
-$ta = new emv("54","1.00");
+$ta = new emv("54",$valor);
 
 //Country Code
 $cc = new emv("58","BR");
 
 //Merchant Name
-$mn = new emv("59","Daniel R.");
+$mn = new emv("59",$nome);
 
 //Merchant City
-$mc = new emv("60","Sorocaba");
+$mc = new emv("60",$city);
 
 //Additional Data Field
-$adf_rl = new emv("05","***"); //Reference Label
+
+if ($id == '') $id = genRndStr();
+$adf_rl = new emv("05",$id); //Reference Label
 $adf = new emv("62", $adf_rl->makestr());
 
 //Montagem str do qrcode pix
@@ -153,7 +173,7 @@ $builder = new Builder(
     margin: 5,
     roundBlockSizeMode: RoundBlockSizeMode::Margin,
     logoPath: __DIR__.'/logo-pix.png',
-    logoResizeToWidth: 50,
+    logoResizeToWidth: 30,
     logoPunchoutBackground: true,
     labelText: 'Pague com PIX!',
     labelFont: new OpenSans(20),
@@ -163,11 +183,14 @@ $builder = new Builder(
 $qrcode = $builder->build();
 
 // Imprime QR-Code
-echo "<center><img src='data:image/png;base64,".base64_encode($qrcode->getString())."'><BR><BR>";
+echo "<center><img src='data:image/png;base64,".base64_encode($qrcode->getString())."'></center>";
 
 //Imprime QRCode Copia e Cola
-echo $qrcodestr."</center>";
+echo "<center><textarea id='w3review' name='w3review' rows='4' cols='50' readonly> $qrcodestr </textarea></center>";
 
+echo "<center><a href='$fullurl'>Link direto para essa página</a></center>";
+
+}
 ?>
 
 </body>
