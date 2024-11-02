@@ -113,13 +113,13 @@ select{
         <input type="text" name="valor" class="field-long" title="Valor" placeholder="0.00" /> </li>
 	
 	<li><label>Nome do Recebedor <span class="required">*</span></label>
-        <input type="text" name="nome" class="field-long" required title="Seu Nome" placeholder="Seu Nome" /> </li>
+        <input type="text" name="nome" class="field-long" required title="Seu Nome" placeholder="Seu Nome" maxlength="25" /> </li>
     
 	<li><label>Cidade <span class="required">*</label>
-        <input type="text" required name="city" title="Cidade do Recebedor" class="field-long" value="SAO PAULO" /> </li>
+        <input type="text" required name="city" title="Cidade do Recebedor" class="field-long" value="SAO PAULO" maxlength="15" /> </li>
 	
 	<li><label>ID da Transação </label>
-        <input type="text" name="id" class="field-long" placeholder="PAGAMENTO001" title="Identificação da Transação. Se em branco, será um valor aleatório" /> </li>
+        <input type="text" name="id" class="field-long" placeholder="PAGAMENTO001" title="Identificação da Transação. Se em branco, será um valor aleatório" maxlength="20" /> </li>
 	
 	<li><input type="submit" value="Enviar" /> </li>
 </ul>
