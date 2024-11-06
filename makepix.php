@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=0.7%" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<head> 
+<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="alertify.css" />
+<link rel="stylesheet" href="default.css" />
+<script src="alertify.js"></script>
+</head>
 <html><body>
 
 <?php
@@ -14,7 +20,6 @@ use Endroid\QrCode\Label\Font\OpenSans;
 use Endroid\QrCode\RoundBlockSizeMode;
 use Endroid\QrCode\Writer\PngWriter;
 
-$fullurl = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 //--------------------------------------------------------------------
 
 //Função para calucular o CRC16-CCITT-FFFF, 
@@ -101,20 +106,15 @@ class emv {
 
 //-----------------------------------------------------------------------
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-	$pixkey	= $_GET['pixkey'];
-    $valor  = $_GET['valor'];
-	$valor  = sprintf("%01.2f", str_replace(",", ".", $_GET['valor']));
-    $nome   = $_GET['nome'];
-    $city   = $_GET['city'];
-    $id		= $_GET['id'];
-/*
-$pixkey = "31182455816";
-$valor = "1.00";
-$nome = "Daniel R.";
-$city = "Sorocaba";
-$id = "";
-*/
+if (($_SERVER['REQUEST_METHOD'] === 'POST') || ($_SERVER['REQUEST_METHOD'] === 'GET')) {
+	$pixkey	= $_POST['pixkey'];
+    $valor  = $_POST['valor'];
+	$valor  = sprintf("%01.2f", str_replace(",", ".", $_POST['valor']));
+    $nome   = $_POST['nome'];
+    $city   = $_POST['city'];
+    $id		= $_POST['id'];
+	$gqrcode = $_GET['pix'];
+	$glink = $_GET['glink'];
 	
 //Inicio da criação dos objetos, para montagem str do qrcode pix
 
@@ -151,12 +151,18 @@ $adf_rl = new emv("05",$id); //Reference Label
 $adf = new emv("62", $adf_rl->makestr());
 
 //Montagem str do qrcode pix
-$qrcodestr = $pfi->makestr().$mai->makestr().$mcc->makestr().$tc->makestr(). 
-			 $ta->makestr().$cc->makestr().$mn->makestr(). $mc->makestr().
-			 $adf->makestr()."6304"; //Final "6304" = CRC16-CCITT-FFFF
+$qrcode = trim($qrcode);
 
-//Calculo do CRC
-$qrcodestr = $qrcodestr.computeCRC($qrcodestr);
+if ($gqrcode == "") { 
+	$qrcodestr = $pfi->makestr().$mai->makestr().$mcc->makestr().$tc->makestr(). 
+				$ta->makestr().$cc->makestr().$mn->makestr(). $mc->makestr().
+				$adf->makestr()."6304"; //Final "6304" = CRC16-CCITT-FFFF
+
+	//Calculo do CRC
+	$qrcodestr = $qrcodestr.computeCRC($qrcodestr);
+}
+else 
+	$qrcodestr = $gqrcode;
 
 //----------------------------------------------------------------------------
 
@@ -181,17 +187,61 @@ $builder = new Builder(
 );
 
 $qrcode = $builder->build();
+$b64qrcode = 'data:image/png;base64,'.base64_encode($qrcode->getString());
 
-// Imprime QR-Code
-echo "<center><img src='data:image/png;base64,".base64_encode($qrcode->getString())."'></center>";
+$fullurl = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?pix='.$qrcodestr;
 
-//Imprime QRCode Copia e Cola
-echo "<center><textarea id='w3review' name='w3review' rows='4' cols='50' readonly> $qrcodestr </textarea></center>";
+echo "<ul class='form-style-1'>";
 
-echo "<center><a href='$fullurl'>Link direto para essa página</a></center>";
+echo "<li><center><Label class='required'>Confirme a identidade e o valor antes de pagar!</label></center></li>";
+echo "<center><a download='qrcode_pix.png' href='$b64qrcode'> <img src='$b64qrcode' title='Clique no QRCode para baixar' /> </a></center>";
+echo "<li> <Label>Código  PIX:</label></li>";
+echo "<li><textarea id='txtpix' style='padding:.5rem;' rows='3' cols='50' readonly>$qrcodestr</textarea></li>";
+echo "<li><center><a href='javascript:void(0);' onclick='btnclick()'>Copiar código PIX</a></center></li>";
+echo "<li><center><a href='https://wa.me/?text=$qrcodestr' >Compartilhar código PIX no WhatsApp</a></center></li>";
+
+echo "<li><center>";
+if (!($glink == '1'))
+	echo "<a href='$fullurl&glink=1' class='button'>Gerar um link curto desta página</a>";
+else {
+	$api_url = 'https://ulvis.net/api.php?url=';
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $api_url.urlencode($fullurl).'&private=1');
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+	
+	$data = curl_exec($ch);
+	curl_close($ch);
+	echo '<li> <label>Link curto desta página, clique no link para copiar: </label> <a href="javascript:void(0);" onclick="pastetxt('."'".$data."', 'Link Curto Copiado!')". '"' . ">$data</a></li>";
+	
+} 
+
+echo "</center></li>";
 
 }
 ?>
-
+</ul>
 </body>
+<script>
+
+function pastetxt(txt, msg) {
+	var textArea = document.createElement("textarea");
+	textArea.value = txt;
+  
+	// Avoid scrolling to bottom
+	textArea.style.position = "fixed";
+	document.body.appendChild(textArea);
+	textArea.focus();
+	textArea.select();
+	textArea.setSelectionRange(0, 99999); // For mobile devices
+	document.execCommand('copy');
+	document.body.removeChild(textArea);
+	alertify.notify(msg , 'success', 3);
+}
+
+function btnclick() {
+	var copyText = document.getElementById("txtpix");
+	pastetxt(copyText.value, 'Código PIX Copiado!');
+}
+</script>
 </html>

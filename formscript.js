@@ -1,5 +1,8 @@
 	var vtipo = document.getElementById("stipo");
 	var vkey = document.getElementById("pixkey");
+	var btsub = document.getElementById("btsub");
+	var ckbox = document.getElementById("ckbox");
+	var lvckbox = document.getElementById("lbckbox");
 	
 	function TestaCPF(strCPF) {
 		var Soma;
@@ -109,5 +112,16 @@
 				vkey.title="Chave Aleatória";
 				vkey.placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
 			break;
+		}
+	}
+	
+	function clckbox() {
+		if (ckbox.checked) {
+			btsub.type = "submit";
+			lbckbox.hidden = true;
+		}
+		else {
+			btsub.type = "hidden";
+			lbckbox.hidden = false;
 		}
 	}
