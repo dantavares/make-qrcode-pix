@@ -6,6 +6,8 @@
 <link rel="stylesheet" href="alertify.css" />
 <link rel="stylesheet" href="default.css" />
 <script src="alertify.js"></script>
+<title>Gerador de QRCode PIX</title>
+<link rel="icon" href="logo-pix.png">
 </head>
 <html><body>
 
@@ -74,20 +76,6 @@ function computeCRC($str) {
     return strtoupper(dechex($answer));
 }
 
-/*
-function genRndStr($length = 6) {
-    $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $charactersLength = strlen($characters);
-    $randomString = '';
-
-    for ($i = 0; $i < $length; $i++) {
-        $randomString .= $characters[random_int(0, $charactersLength - 1)];
-    }
-
-    return $randomString;
-}
-*/
-
 //----------------------------------------------------------------------
 
 //Classe base para montagem do codigo str do qrcode pix
@@ -116,9 +104,6 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST') || ($_SERVER['REQUEST_METHOD'] === '
     $id		= trim($_POST['id']);
 	$gqrcode = $_GET['pix'];
 	$glink = $_GET['glink'];
-	
-//Caso usuário não tenha entrado com id, gere uma
-//if ($id == '') $id = genRndStr();
 	
 //Inicio da criação dos objetos, para montagem str do qrcode pix
 
