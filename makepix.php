@@ -74,6 +74,7 @@ function computeCRC($str) {
     return strtoupper(dechex($answer));
 }
 
+/*
 function genRndStr($length = 6) {
     $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
@@ -85,6 +86,7 @@ function genRndStr($length = 6) {
 
     return $randomString;
 }
+*/
 
 //----------------------------------------------------------------------
 
@@ -107,24 +109,34 @@ class emv {
 //-----------------------------------------------------------------------
 
 if (($_SERVER['REQUEST_METHOD'] === 'POST') || ($_SERVER['REQUEST_METHOD'] === 'GET')) {
-	$pixkey	= $_POST['pixkey'];
-    $valor  = $_POST['valor'];
-	$valor  = sprintf("%01.2f", str_replace(",", ".", $_POST['valor']));
-    $nome   = $_POST['nome'];
-    $city   = $_POST['city'];
-    $id		= $_POST['id'];
+	$pixkey	= trim($_POST['pixkey']);
+    $valor  = sprintf("%01.2f", str_replace(",", ".", $_POST['valor']));
+    $nome   = strtoupper(trim($_POST['nome']));
+    $city   = strtoupper(trim($_POST['city']));
+    $id		= trim($_POST['id']);
 	$gqrcode = $_GET['pix'];
 	$glink = $_GET['glink'];
+	
+//Caso usuário não tenha entrado com id, gere uma
+//if ($id == '') $id = genRndStr();
 	
 //Inicio da criação dos objetos, para montagem str do qrcode pix
 
 //Payload Format Indicator
 $pfi = new emv("00","01");
 
+//Point of Initiation Method
+$pim = new emv("01","11");
+
 //Merchant Account Information
 $mai_gui = new emv("00","BR.GOV.BCB.PIX"); //Globally Unique Identifier
 $mai_key = new emv("01",$pixkey); //Chave PIX
-$mai = new emv("26", $mai_gui->makestr().$mai_key->makestr());
+$mai_id = new emv("02",$id); //ID
+
+if ($id == '') 
+	$mai = new emv("26", $mai_gui->makestr().$mai_key->makestr());
+else
+	$mai = new emv("26", $mai_gui->makestr().$mai_key->makestr().$mai_id->makestr());
 
 //Merchant Category Code
 $mcc = new emv("52","0000");
@@ -145,18 +157,16 @@ $mn = new emv("59",$nome);
 $mc = new emv("60",$city);
 
 //Additional Data Field
-
-if ($id == '') $id = genRndStr();
-$adf_rl = new emv("05",$id); //Reference Label
+$adf_rl = new emv("05","***"); //Reference Label
 $adf = new emv("62", $adf_rl->makestr());
 
 //Montagem str do qrcode pix
 $qrcode = trim($qrcode);
 
 if ($gqrcode == "") { 
-	$qrcodestr = $pfi->makestr().$mai->makestr().$mcc->makestr().$tc->makestr(). 
-				$ta->makestr().$cc->makestr().$mn->makestr(). $mc->makestr().
-				$adf->makestr()."6304"; //Final "6304" = CRC16-CCITT-FFFF
+	$qrcodestr = $pfi->makestr().$pim->makestr().$mai->makestr().$mcc->makestr().$tc->makestr(). 
+				$ta->makestr().$cc->makestr().$mn->makestr(). $mc->makestr().$adf->makestr()."6304"; 
+				//Final "6304" = CRC16-CCITT-FFFF
 
 	//Calculo do CRC
 	$qrcodestr = $qrcodestr.computeCRC($qrcodestr);

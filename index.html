@@ -15,7 +15,7 @@
 			<option value="4">CNPJ</option>
 			<option value="5">Aleatória</option>
 		</select>
-	<input type="text" name="pixkey" id="pixkey" required placeholder="exemplo@email.com" size=37% onblur="checkVal()" pattern="[^@\s]+@[^@\s]+\.[^@\s]+" title="Endereço de E-Mail" />
+	<input type="text" name="pixkey" id="pixkey" required placeholder="exemplo@email.com" size=37% onblur="checkVal()" pattern="^[a-z0-9]+@[a-z0-9]+[\.][a-z0-9\.]+$" title="Endereço de E-Mail" />
     
 	<li><label>Valor </label>
         <input type="text" name="valor" class="field-long" title="Valor, somente números" pattern="^([0-9,.]+)$" placeholder="0.00" /> </li>

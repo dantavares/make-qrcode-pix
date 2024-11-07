@@ -87,7 +87,7 @@
 		vkey.value = "";
 		switch (vtipo.value) {
 			case "1":
-				vkey.pattern ="[^@\s]+@[^@\s]+\.[^@\s]+"; 
+				vkey.pattern ="^[a-z0-9]+@[a-z0-9]+[\.][a-z0-9\.]+$"; 
 				vkey.title="Endereço de E-Mail";
 				vkey.placeholder="exemplo@email.com";
 			break;
