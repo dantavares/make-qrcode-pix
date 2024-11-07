@@ -220,6 +220,7 @@ echo "</center></li>";
 
 }
 ?>
+<li><center> <a href="https://ulvis.net/opdg"> <img src="donate_icon.jpg" title="Este sistema foi útil pra você? Considere me enviar uma doação!" width="50" height="60"> </a></center></li>
 </ul>
 </body>
 <script>
