@@ -7,7 +7,7 @@
 <link rel="icon" href="logo-pix.png">
 </head>
 <body>
-
+<center><h2> Gerador de QR-Code PIX </h2></center>
 <form name='form' action='makepix.php' method='POST' enctype='multipart/form-data'>
 <ul class="form-style-1">
 	<label>Chave Pix <span class="required">*</span></label><BR>
@@ -26,18 +26,20 @@
 	<li><label>Nome do Recebedor <span class="required">*</span></label>
         <input type="text" name="nome" pattern="^[a-zA-Z0-9 ]+$" class="field-long" required title="Seu Nome" placeholder="Seu Nome, apenas letras e números" maxlength="25" /> </li>
     
-	<li><label>Cidade <span class="required">*</label>
+	<li><label>Cidade: <span class="required">*</label>
         <input type="text" required name="city" pattern="^[a-zA-Z0-9 ]+$" title="Cidade do Recebedor, apenas letras e números" class="field-long" value="SAO PAULO" maxlength="15" /> </li>
 	
-	<li><label>ID da Transação </label>
-        <input type="text" name="id" class="field-long" pattern="^[a-zA-Z0-9 ]+$" placeholder="PAGAMENTO001" title="Identificação da Transação. Se em branco, será um valor aleatório. Apenas letras e números" maxlength="20" /> </li>
+	<li><label>Descrição:</label>
+        <input type="text" name="id" class="field-long" pattern="^[a-zA-Z0-9 ]+$" placeholder="PAGAMENTO001" title="Identificação da Transação. Apenas letras e números" maxlength="20" /> </li>
 	
 	<li><input type="checkbox" id="ckbox" onclick="clckbox()" /> <label> <a href="https://dantavares.tec.br/home/index.php/isencao-de-responsabilidade/"> Li e estou de acordo com o "Termo de Isenção". </a> </label></li>
 	<li> <label id="lbckbox" > <span style="font-size: 200%"> ⮤ </span> Você precisa aceitar o termo de isenção acima, antes de continuar. </label></li>
 	
 	<li><input id="btsub" type="hidden" value="Gerar" /> </li>
 	
-	<li><center> <a href="https://ulvis.net/dRpb"> <img src="donate_icon.jpg" title="Este sistema foi útil pra você? Considere me enviar uma doação!" width="50" height="60"> </a></center></li>
+	<li><center><a href="https://ulvis.net/dRpb"><img src="donate_icon.jpg" title="Este sistema foi útil pra você? Considere me enviar uma doação!" width="50" height="60"></a><BR>Doação</center></li>
+	<li><center><a href="https://dantavares.tec.br/home/index.php/pagina-de-ajuda/">Preciso de Ajuda!</a></center></li>
+	<li><p style="text-align: right;">Versão 2.1</p></li>
 </ul>
 </form>
 </body>

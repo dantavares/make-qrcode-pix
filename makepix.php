@@ -23,6 +23,17 @@ use Endroid\QrCode\RoundBlockSizeMode;
 use Endroid\QrCode\Writer\PngWriter;
 
 //--------------------------------------------------------------------
+/*
+function genRndStr($length = 4) {
+    $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[random_int(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}
+*/
 
 //Função para calucular o CRC16-CCITT-FFFF, 
 //conforme seção 4.7.3 CRC (ID “63”) da referência #1 do EMV-MPM
@@ -215,7 +226,8 @@ echo "</center></li>";
 
 }
 ?>
-<li><BR><center> <a href="https://ulvis.net/dRpb"> <img src="donate_icon.jpg" title="Este sistema foi útil pra você? Considere me enviar uma doação!" width="50" height="60"> </a></center></li>
+<li><center><a href="https://ulvis.net/dRpb"><img src="donate_icon.jpg" title="Este sistema foi útil pra você? Considere me enviar uma doação!" width="50" height="60"></a><BR>Doação</center></li>
+<li><center><a href="https://dantavares.tec.br/home/index.php/pagina-de-ajuda/">Preciso de Ajuda!</a></center></li>
 </ul>
 </body>
 <script>
