@@ -197,18 +197,22 @@ $b64qrcode = 'data:image/png;base64,'.base64_encode($qrcode->getString());
 
 $fullurl = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?pix='.$qrcodestr;
 
+$cpicon = '<svg viewBox="350 0 766 758" width="25" height="25"><path d="M806.32,188.44H597.7a34.87,34.87,0,0,0-34.84,34.73V466.71H597.7V223.17H806.32Z"></path>'.
+'<path d="M858.56,258v0H667.25a35,35,0,0,0-34.84,34.83V536.28a35,35,0,0,0,34.84,34.83H858.56a34.9,34.9,0,0,0,34.72-34.83V292.8A34.9,34.9,0,0,0,858.56,258Zm0,278.29H667.25V292.8H858.56Z"></path>'.
+'</svg>';
+
 echo "<ul class='form-style-1'>";
 
 echo "<li><center><Label class='required'>Confirme a identidade e o valor antes de pagar!</label></center></li>";
 echo "<center><a download='qrcode_pix.png' href='$b64qrcode'> <img src='$b64qrcode' title='Clique no QRCode para baixar' /> </a></center>";
 echo "<li> <Label>Código  PIX:</label></li>";
 echo "<li><textarea id='txtpix' style='padding:.5rem;' rows='3' cols='50' readonly>$qrcodestr</textarea></li>";
-echo "<li><center><a href='javascript:void(0);' onclick='btnclick()'>Copiar código PIX</a></center></li>";
-echo "<li><center><a href='https://wa.me/?text=$qrcodestr' >Compartilhar código PIX no WhatsApp</a></center></li>";
+echo "<li><label onclick='btnclick()'>Copiar código PIX$cpicon</label></li>";
+echo "<li><a href='https://wa.me/?text=$qrcodestr' >Compartilhar código PIX no WhatsApp</a></li>";
 
-echo "<li><center>";
+echo "<li>";
 if (!($glink == '1'))
-	echo "<a href='$fullurl&glink=1' class='button'>Gerar um link curto desta página</a>";
+	echo "<a href='$fullurl&glink=1'>Gerar um link curto desta página</a>";
 else {
 	$api_url = 'https://ulvis.net/api.php?url=';
 	$ch = curl_init();
@@ -218,11 +222,11 @@ else {
 	
 	$data = curl_exec($ch);
 	curl_close($ch);
-	echo '<li> <label>Link curto desta página, clique no link para copiar: </label> <a href="javascript:void(0);" onclick="pastetxt('."'".$data."', 'Link Curto Copiado!')". '"' . ">$data</a></li>";
+	echo '<li> <label onclick="pastetxt('."'".$data."', 'Link Curto Copiado!')". '"' . ">Link curto desta página: $data$cpicon</label></li>";
 	
 } 
 
-echo "</center></li>";
+echo "</li><BR>";
 
 }
 ?>
