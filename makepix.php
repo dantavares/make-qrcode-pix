@@ -205,9 +205,8 @@ echo "<ul class='form-style-1'>";
 
 echo "<li><center><Label class='required'>Confirme a identidade e o valor antes de pagar!</label></center></li>";
 echo "<center><a download='qrcode_pix.png' href='$b64qrcode'> <img src='$b64qrcode' title='Clique no QRCode para baixar' /> </a></center>";
-echo "<li> <Label>Código  PIX:</label></li>";
+echo "<li><label onclick='btnclick()' title='Clique para copiar'>Código PIX$cpicon</label></li>";
 echo "<li><textarea id='txtpix' style='padding:.5rem;' rows='3' cols='50' readonly>$qrcodestr</textarea></li>";
-echo "<li><label onclick='btnclick()'>Copiar código PIX$cpicon</label></li>";
 echo "<li><a href='https://wa.me/?text=$qrcodestr' >Compartilhar código PIX no WhatsApp</a></li>";
 
 echo "<li>";
@@ -222,8 +221,7 @@ else {
 	
 	$data = curl_exec($ch);
 	curl_close($ch);
-	echo '<li> <label onclick="pastetxt('."'".$data."', 'Link Curto Copiado!')". '"' . ">Link curto desta página: $data$cpicon</label></li>";
-	
+	echo '<li> <label onclick="pastetxt('."'".$data."', 'Link Curto Copiado!')".'"'." title='Clique para copiar o link'>Link curto desta página: $data$cpicon</label></li>";	
 } 
 
 echo "</li><BR>";
