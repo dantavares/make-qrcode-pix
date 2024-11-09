@@ -197,15 +197,18 @@ $b64qrcode = 'data:image/png;base64,'.base64_encode($qrcode->getString());
 
 $fullurl = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?pix='.$qrcodestr;
 
-$cpicon = '<svg viewBox="350 0 766 758" width="25" height="25"><path d="M806.32,188.44H597.7a34.87,34.87,0,0,0-34.84,34.73V466.71H597.7V223.17H806.32Z"></path>'.
-'<path d="M858.56,258v0H667.25a35,35,0,0,0-34.84,34.83V536.28a35,35,0,0,0,34.84,34.83H858.56a34.9,34.9,0,0,0,34.72-34.83V292.8A34.9,34.9,0,0,0,858.56,258Zm0,278.29H667.25V292.8H858.56Z"></path>'.
-'</svg>';
+$cpicon = '<svg width="15" height="15" viewBox="0 0 0.45 0.45" xmlns="http://www.w3.org/2000/svg">'.
+'<path d="M.394.167.392.163V.161L.389.155.277.043.271.039H.268L.262.038H.187a.056.056 0 0 0-.056.056'.
+'v.018H.112a.056.056 0 0 0-.056.056v.188a.056.056 0 0 0 .056.057h.15A.056.056 0 0 0 .32.356V.338h.019'.
+'A.056.056 0 0 0 .395.281V.167M.281.101.33.15H.3A.02.02 0 0 1 .281.131Zm0 .255a.02.02 0 0 1-.019.019h-'.
+'.15A.02.02 0 0 1 .095.356V.168A.02.02 0 0 1 .112.15h.019v.131a.056.056 0 0 0 .057.057h.094ZM.356.281A.'.
+'02.02 0 0 1 .338.3h-.15A.02.02 0 0 1 .17.281V.093A.02.02 0 0 1 .188.075h.056v.056A.056.056 0 0 0 .3.188h.056Z"/></svg>';
 
 echo "<ul class='form-style-1'>";
 
 echo "<li><center><Label class='required'>Confirme a identidade e o valor antes de pagar!</label></center></li>";
 echo "<center><a download='qrcode_pix.png' href='$b64qrcode'> <img src='$b64qrcode' title='Clique no QRCode para baixar' /> </a></center>";
-echo "<li><label onclick='btnclick()' title='Clique para copiar'>Código PIX$cpicon</label></li>";
+echo "<li><label onclick='btnclick()' title='Clique para copiar'>Código PIX $cpicon</label></li>";
 echo "<li><textarea id='txtpix' style='padding:.5rem;' rows='3' cols='50' readonly>$qrcodestr</textarea></li>";
 echo "<li><a href='https://wa.me/?text=$qrcodestr' >Compartilhar código PIX no WhatsApp</a></li>";
 
@@ -221,7 +224,7 @@ else {
 	
 	$data = curl_exec($ch);
 	curl_close($ch);
-	echo '<li> <label onclick="pastetxt('."'".$data."', 'Link Curto Copiado!')".'"'." title='Clique para copiar o link'>Link curto desta página: $data$cpicon</label></li>";	
+	echo '<li> <label onclick="pastetxt('."'".$data."', 'Link Curto Copiado!')".'"'." title='Clique para copiar o link'>Link curto desta página: $data $cpicon</label></li>";	
 } 
 
 echo "</li><BR>";
