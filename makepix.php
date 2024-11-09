@@ -231,7 +231,7 @@ echo "</li><BR>";
 
 }
 ?>
-<li><center><a href="https://ulvis.net/dRpb"><img src="donate_icon.jpg" title="Este sistema foi útil pra você? Considere me enviar uma doação!" width="50" height="60"></a><BR>Doação</center></li>
+<li><center><a href="https://tinyurl.com/2a4du5vf"><img src="donate_icon.jpg" title="Este sistema foi útil pra você? Considere me enviar uma doação!" width="50" height="60"></a><BR>Doação</center></li>
 <li><center><a href="https://dantavares.tec.br/home/index.php/pagina-de-ajuda/">Preciso de Ajuda!</a></center></li>
 </ul>
 </body>
