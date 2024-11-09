@@ -216,7 +216,7 @@ echo "<li>";
 if (!($glink == '1'))
 	echo "<a href='$fullurl&glink=1'>Gerar um link curto desta página</a>";
 else {
-	$api_url = 'https://ulvis.net/api.php?url=';
+	$api_url = 'https://tinyurl.com/api-create.php?url=';
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $api_url.urlencode($fullurl).'&private=1');
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
