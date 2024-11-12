@@ -214,17 +214,17 @@ echo "<li><a href='https://wa.me/?text=$qrcodestr' >Compartilhar código PIX no 
 
 echo "<li>";
 if (!($glink == '1'))
-	echo "<a href='$fullurl&glink=1'>Gerar um link curto desta página</a>";
+	echo "<a href='$fullurl&glink=1'>Gerar link de pagamento</a>";
 else {
 	$api_url = 'https://tinyurl.com/api-create.php?url=';
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $api_url.urlencode($fullurl).'&private=1');
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_HEADER, 0);
+    	curl_setopt($ch, CURLOPT_HEADER, 0);
 	
 	$data = curl_exec($ch);
 	curl_close($ch);
-	echo '<li> <label onclick="pastetxt('."'".$data."', 'Link Curto Copiado!')".'"'." title='Clique para copiar o link'>Link curto desta página: $data $cpicon</label></li>";	
+	echo '<li> <label onclick="pastetxt('."'".$data."', 'Link Copiado!')".'"'." title='Clique para copiar o link'>Link de pagamento: $data $cpicon</label></li>";	
 } 
 
 echo "</li><BR>";
