@@ -12,6 +12,13 @@
 <html><body>
 
 <?php
+	
+/*
+	ini_set('display_errors', 1);
+	ini_set('display_startup_errors', 1);
+	error_reporting(E_ALL);
+*/	
+	
 require 'vendor/autoload.php';
 
 use Endroid\QrCode\Builder\Builder;
@@ -216,14 +223,15 @@ echo "<li>";
 if (!($glink == '1'))
 	echo "<a href='$fullurl&glink=1'>Gerar link de pagamento</a>";
 else {
-	$api_url = 'https://tinyurl.com/api-create.php?url=';
+	$api_url = 'https://dantavares.tec.br/ln/?link=';
 	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $api_url.urlencode($fullurl).'&private=1');
+	curl_setopt($ch, CURLOPT_URL, $api_url.urlencode($fullurl));
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    	curl_setopt($ch, CURLOPT_HEADER, 0);
-	
+    curl_setopt($ch, CURLOPT_HEADER, 0);
 	$data = curl_exec($ch);
 	curl_close($ch);
+	$jsdata = json_decode($data);
+	$data = $jsdata->tnylink;
 	echo '<li> <label onclick="pastetxt('."'".$data."', 'Link Copiado!')".'"'." title='Clique para copiar o link'>Link de pagamento: $data $cpicon</label></li>";	
 } 
 
